@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Spreadsheet Records</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, #2563eb, #6366f1);
+            color: white;
+            padding: 35px 7%;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .title-area {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+        }
+
+        .title-area h1 {
+            font-size: 32px;
+            margin-bottom: 7px;
+        }
+
+        .title-area p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* BUTTON */
+        #loadBtn {
+            border: none;
+            background: white;
+            color: #2563eb;
+            padding: 14px 22px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        #loadBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        /* MAIN */
+        .main {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 25px;
+        }
+
+        /* TOOLBAR */
+        .toolbar {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .search-box {
+            flex: 1;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 14px 18px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .search-box:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+        }
+
+        .counter {
+            background: white;
+            border: 1px solid #e5e7eb;
+            padding: 14px 18px;
+            border-radius: 12px;
+            white-space: nowrap;
+            font-weight: bold;
+            color: #4b5563;
+        }
+
+        /* RECORD GRID */
+        #dataContainer {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        /* CARD */
+        .record {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            transition: 0.2s;
+        }
+
+        .record:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        .record-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .record h3 {
+            font-size: 18px;
+            color: #1e3a5f;
+        }
+
+        .info {
+            margin: 9px 0;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .info strong {
+            color: #334155;
+        }
+
+        .age-badge {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 7px 12px;
+            border-radius: 20px;
+            background: #eef2ff;
+            color: #4f46e5;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        /* LOADING / ERROR */
+        .message {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 50px;
+            color: #64748b;
+        }
+
+        .error {
+            color: #dc2626;
+        }
+
+        /* TABLET */
+        @media (max-width: 1100px) {
+            #dataContainer {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* MOBILE */
+        @media (max-width: 800px) {
+
+            .header {
+                padding: 25px 20px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .title-area h1 {
+                font-size: 25px;
+            }
+
+            #loadBtn {
+                width: 100%;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            #dataContainer {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .counter {
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            #dataContainer {
+                grid-template-columns: 1fr;
+            }
+
+            .title-area {
+                align-items: flex-start;
+            }
+
+            .logo {
+                width: 50px;
+                height: 50px;
+                font-size: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+
+        <div class="header-content">
+
+            <div class="title-area">
+
+                <div class="logo">
+                    👥
+                </div>
+
+                <div>
+                    <h1>Spreadsheet Records</h1>
+                    <p>View and browse data from your Google Sheet</p>
+                </div>
+
+            </div>
+
+            <button id="loadBtn">
+                ↓ &nbsp; Fetch Spreadsheet Data
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <main class="main">
+
+        <div class="toolbar">
+
+            <input
+                type="text"
+                id="searchBox"
+                class="search-box"
+                placeholder="🔎  Search by name, profession, or gender..."
+            >
+
+            <div class="counter">
+                Total Records: <span id="recordCount">0</span>
+            </div>
+
+        </div>
+
+
+        <div id="dataContainer">
+
+            <div class="message">
+                Click <strong>"Fetch Spreadsheet Data"</strong> to load the records.
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script src="app.js"></script>
+
+</body>
+</html>
